@@ -3,7 +3,9 @@
 #include <vector>
 #include <string>
 
-#include "Producto.h"//mandamos a llamar la clase
+//mandamos a llamar la clase, tiene que estar en el mismo directorio que el main.cpp
+//si no se tiene que ajustar la ruta
+#include "Producto.h"
 
 using namespace std;
 
@@ -90,7 +92,7 @@ int main() {
                 cout << "No hay productos cargados.\n";
             } else {
                 for (const Producto& p : productos) {
-                    p.imprimir();
+                    p.imprimir();//imprimir los datos del producto usando el metodo imprimir de la clase Producto
                 }
             }
             break;

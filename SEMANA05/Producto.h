@@ -1,5 +1,5 @@
-#ifndef PRODUCTO_H
-#define PRODUCTO_H
+#ifndef PRODUCTO_H // Evita la inclusión múltiple del archivo de encabezado
+#define PRODUCTO_H // Definición de la clase Producto
 
 #include <iostream>
 #include <string>
@@ -31,4 +31,4 @@ public:
 };
 
 
-#endif
+#endif // Fin de la definición de la clase Producto
