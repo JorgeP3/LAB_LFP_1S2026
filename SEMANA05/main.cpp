@@ -6,6 +6,7 @@
 //mandamos a llamar la clase, tiene que estar en el mismo directorio que el main.cpp
 //si no se tiene que ajustar la ruta
 #include "Producto.h"
+#include "Categoria.h"//mandamos a llamar la clase Categoria, tiene que estar en el mismo directorio que el main.cpp
 
 using namespace std;
 
@@ -34,26 +35,32 @@ vector<string> split(string linea, char delimitador){ //(linea, ",")
 int main() {
 
     vector<Producto> productos; // vector para almacenar los objetos Producto
+    vector<Categoria> categorias; // vector para almacenar los objetos Categoria
+
     int opcion;
 
     
 
     do {
         cout << "\n===== MENU =====\n";
-        cout << "1. Cargar archivo\n";
-        cout << "2. Mostrar productos\n";
-        cout << "3. Mostrar producto mas caro\n";
-        cout << "4. Salir\n";
+        cout << "1. Cargar productos\n";
+        cout << "2. Cargar categorias\n";
+        cout << "3. Mostrar productos\n";
+        cout << "4. Mostrar productos con su categoria\n";
+        cout << "5. Mostrar productos por categoria\n";
+        cout << "6. Mostrar producto mas caro\n";
+        cout << "7. Salir\n";
         cout << "Seleccione una opcion: ";
         cin >> opcion;
 
         switch (opcion) {
 
+        //CARGAR PRODUCTOS
         case 1: {
             productos.clear();
 
             // Ruta relativa (mismo directorio del .exe)
-            string ruta = "productos.txt";
+            string ruta = "C:\\Users\\lmpgp\\Documents\\1. Ingenieria en sistemas\\1. 1S 2026\\Auxiliatura\\1. Repositorios\\LAB_LFP_1S2026\\SEMANA05\\output\\productos.txt";
 
             // Ruta por si quieren colocar el archivo en el escritorio (ajusten la ruta a su usuario)
             // string ruta = "C:\\Users\\TuUsuario\\Desktop\\productos.txt";
@@ -72,12 +79,13 @@ int main() {
                 vector<string> partes = split(linea, ',');//separamos la linea en partes usando la funcion split, el delimitador es la coma (,)
                 //se iguala a 3 porque cada linea del archivo tiene 3 campos (id, nombre, precio)
                 // si el archivo tiene 4 campos, se iguala a 4, etc
-                if (partes.size() == 3) {
+                if (partes.size() == 4) {
                     int id = stoi(partes[0]);//stoi para convertir la cadena a entero
                     string nombre = partes[1];//el nombre es una cadena, no necesita conversion
                     double precio = stod(partes[2]);//stod para convertir la cadena a double
+                    int idCategoria = stoi(partes[3]);//stoi para convertir la cadena a entero
 
-                    Producto p(id, nombre, precio);//crear el objeto Producto con los datos del archivo
+                    Producto p(id, nombre, precio, idCategoria);//crear el objeto Producto con los datos del archivo
                     productos.push_back(p);//agregar el objeto al vector de productos
                 }
             }
@@ -87,7 +95,37 @@ int main() {
             break;
         }
 
-        case 2:
+        //CARGAR CATEGORIAS
+        case 2: {
+            categorias.clear();
+
+            ifstream archivo("C:\\Users\\lmpgp\\Documents\\1. Ingenieria en sistemas\\1. 1S 2026\\Auxiliatura\\1. Repositorios\\LAB_LFP_1S2026\\SEMANA05\\output\\categorias.lfp");
+
+            if (!archivo.is_open()) {
+                cout << "No se pudo abrir categorias.lfp\n";
+                break;
+            }
+
+            string linea;
+
+            while (getline(archivo, linea)) {
+                vector<string> partes = split(linea, ',');
+
+                if (partes.size() == 2) {
+                    int id = stoi(partes[0]);
+                    string nombre = partes[1];
+
+                    categorias.push_back(Categoria(id, nombre));
+                }
+            }
+
+            archivo.close();
+            cout << "Categorias cargadas correctamente.\n";
+            break;
+        }
+
+        //MOSTRAR PRODUCTOS
+        case 3:
             if (productos.empty()) {
                 cout << "No hay productos cargados.\n";
             } else {
@@ -96,8 +134,63 @@ int main() {
                 }
             }
             break;
+        
+        //MOSTRAR PRODUCTOS CON SU CATEGORIA
+        case 4:
+            if (productos.empty() || categorias.empty()) {
+                cout << "No hay productos o categorias cargados cargados.\n";
+            } else {
+                cout << "Productos con su categoria:\n";
 
-        case 3:
+                for (const Producto& p : productos){
+                    string nombreCategoria = "No encontrada";
+
+                    for (const Categoria& c : categorias) {
+                        if (p.getIdCategoria() == c.getId()) {
+                            nombreCategoria = c.getNombre();
+                            break;
+                        }
+                    }
+
+                    cout << "ID: " << p.getIdCategoria() 
+                         << " | Nombre: " << p.getNombre() 
+                         << " | Precio: Q" << p.getPrecio() 
+                         << " | Categoria: " << nombreCategoria << endl;
+                }
+            }
+            break;
+
+        //MOSTRAR PRODUCTOS POR CATEGORIA
+        case 5:
+            if (productos.empty() || categorias.empty()) {
+                cout << "Debe cargar productos y categorias primero.\n";
+            } else {
+
+                cout << "\n===== PRODUCTOS AGRUPADOS POR CATEGORIA =====\n";
+
+                for (const Categoria& c : categorias) {
+
+                    cout << "\nCategoria: " << c.getNombre() << endl;
+                    cout << "--------------------------\n";
+
+                    bool tieneProductos = false;
+
+                    for (const Producto& p : productos) {
+                        if (p.getIdCategoria() == c.getId()) {
+                            cout << "- " << p.getNombre()
+                                 << " (Q" << p.getPrecio() << ")\n";
+                            tieneProductos = true;
+                        }
+                    }
+
+                    if (!tieneProductos) {
+                        cout << "No hay productos en esta categoria.\n";
+                    }
+                }
+            }
+            break;
+
+        case 6:
             if (productos.empty()) {
                 cout << "No hay productos cargados.\n";
             } else {
@@ -114,7 +207,7 @@ int main() {
             }
             break;
 
-        case 4:
+        case 7:
             cout << "Saliendo...\n";
             break;
 
@@ -122,7 +215,7 @@ int main() {
             cout << "Opcion invalida.\n";
         }
 
-    } while (opcion != 4);
+    } while (opcion != 7);
 
     return 0;
 }

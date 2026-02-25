@@ -1,0 +1,5 @@
+1,Mouse,25.50
+2,Teclado,75.00
+3,Monitor,1500.00
+4,Laptop,5500.99
+5,USB,15.75

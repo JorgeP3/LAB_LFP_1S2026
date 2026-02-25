@@ -1,112 +1,128 @@
 #include <iostream>
+#include <fstream>
+#include <vector>
 #include <string>
 
-//estructuras
-#include <vector>
-#include <map>
-//Lectura escritura de archivos
-#include <fstream>
+//mandamos a llamar la clase, tiene que estar en el mismo directorio que el main.cpp
+//si no se tiene que ajustar la ruta
+#include "Producto.h"
 
 using namespace std;
 
-int main(){
+// FUNCION PARA SEPARAR LOS CAMPOS DE UNA LINEA DE TEXTO (SPLIT)
 
-    // 1. ARREGLO UNICIMENSIONAL
-    int numeros[5] = {1, 2, 3, 4, 5};
+vector<string> split(string linea, char delimitador){ //(linea, ",")
+    vector <string> partes;
+    string actual = ""; //25.50
 
-    //acceder a un elemento
-    cout << "\nAcceso a un elemento:" << endl;
-    cout << "Elemento en la posicion 2: " << numeros[2] << "\n"; // Imprime 3
-
-    //modificar un elemento
-    numeros[2] = 10;
-    cout << "Elemento en la posicion 2 (modificado): " << numeros[2] << "\n";
-
-    // 2. VECTOR (ARREGLO DINAMICO)
-
-    int matriz[2][3] = {
-        {1, 2, 3},
-        {4, 5, 6}
-    };
-
-    //acceder a un elemento
-    cout << "\nAcceso a un elemento en matriz:" << endl;
-    cout << "Elemento en la fila 1, columna 2: " << matriz[1][2] << "\n"; // Imprime 6
-    //modificar un elemento
-    matriz[1][2] = 20;
-    cout << "Elemento en la fila 1, columna 2 (modificado): " << matriz[1][2] << "\n";
-
-    // 3. ITERACION CON FOR 
-    int datos[5] = {10, 20, 30, 40, 50};
-    cout << "\nIteracion con for:" << endl;
-    for (int i = 0; i < 5; i++) {
-        cout << datos[i] << "\n";
+    for (char c : linea) {
+        if (c == delimitador) {
+            partes.push_back(actual);
+            actual = "";
+        } else {
+            actual += c;
+        }
     }
 
-    // 4. ITERACION CON FOR RANGE (C++11 en adelante)
-    int valores[5] = {5, 10, 15, 20, 25};
+    // Agregar la ultima parte
+    // como la ultima parte no termina con el delimitador, se agrega despues del ciclo
+    partes.push_back(actual);
+    return partes;
+}
 
-    cout << "\nIteracion con for range:" << endl;
-    for (int elemento : valores) {
-        cout << elemento << "\n";
-    }
 
-    // 5. VECTORES (ARREGLOS DINAMICOS)
-    vector<int> numerosVector;
+int main() {
 
-    cout << "\nElementos en el vector(vacio):" << endl;
-    for (int num : numerosVector) {
-        cout << num << "\n";
-    }
+    vector<Producto> productos; // vector para almacenar los objetos Producto
+    int opcion;
 
-    //push_back para agregar elementos al vector
-    numerosVector.push_back(100);// posicion 0
-    numerosVector.push_back(200);// posicion 1
-    numerosVector.push_back(300);// posicion 2
     
-    cout << "\nElementos en el vector:" << endl;
-    for (int num : numerosVector) {
-        cout << num << "\n";
-    }
 
-    //metodo para eliminar el ultimo elemento del vector
-    numerosVector.pop_back();
-     cout << "\nElementos en el vector:" << endl;
-    for (int num : numerosVector) {
-        cout << num << "\n";
-    }
+    do {
+        cout << "\n===== MENU =====\n";
+        cout << "1. Cargar archivo\n";
+        cout << "2. Mostrar productos\n";
+        cout << "3. Mostrar producto mas caro\n";
+        cout << "4. Salir\n";
+        cout << "Seleccione una opcion: ";
+        cin >> opcion;
 
-    // 6. ESCRITURA DE ARCHIVO
+        switch (opcion) {
 
-    ofstream salida("archivo.txt");
+        case 1: {
+            productos.clear();
 
-    if (!salida.is_open()) {
-        cout << "Error al crear el archivo.\n";
-        return 1;
-    }
+            // Ruta relativa (mismo directorio del .exe)
+            string ruta = "productos.txt";
 
-    salida << "Hola, este es un archivo de texto.\n";
-    salida << "Escrito desde C++.\n";
+            // Ruta por si quieren colocar el archivo en el escritorio (ajusten la ruta a su usuario)
+            // string ruta = "C:\\Users\\TuUsuario\\Desktop\\productos.txt";
 
-    salida.close();//cerrar el archivo despues de escribirlo
-    cout << "\nArchivo creado y escrito exitosamente.\n";
+            ifstream archivo(ruta);
 
-    // 7. LECTURA DE ARCHIVO
-    ifstream entrada("archivo.txt");
-    string linea;
+            if (!archivo.is_open()) {
+                cout << "No se pudo abrir el archivo.\n";
+                break;
+            }
 
-    if (!entrada.is_open()) {
-        cout << "Error al abrir el archivo.\n";
-        return 1;
-    }
+            string linea;
 
-    cout << "\nContenido del archivo:\n";
-    while (getline(entrada, linea)) {//leer el archivo linea por linea
-        cout << linea << "\n";
-    }
+            while (getline(archivo, linea)) {//leer el archivo linea por linea
 
-    entrada.close();//cerrar el archivo despues de leerlo
-    cout << "\nArchivo leido exitosamente.\n";
+                vector<string> partes = split(linea, ',');//separamos la linea en partes usando la funcion split, el delimitador es la coma (,)
+                //se iguala a 3 porque cada linea del archivo tiene 3 campos (id, nombre, precio)
+                // si el archivo tiene 4 campos, se iguala a 4, etc
+                if (partes.size() == 3) {
+                    int id = stoi(partes[0]);//stoi para convertir la cadena a entero
+                    string nombre = partes[1];//el nombre es una cadena, no necesita conversion
+                    double precio = stod(partes[2]);//stod para convertir la cadena a double
+
+                    Producto p(id, nombre, precio);//crear el objeto Producto con los datos del archivo
+                    productos.push_back(p);//agregar el objeto al vector de productos
+                }
+            }
+
+            archivo.close();
+            cout << "Archivo cargado correctamente.\n";
+            break;
+        }
+
+        case 2:
+            if (productos.empty()) {
+                cout << "No hay productos cargados.\n";
+            } else {
+                for (const Producto& p : productos) {
+                    p.imprimir();//imprimir los datos del producto usando el metodo imprimir de la clase Producto
+                }
+            }
+            break;
+
+        case 3:
+            if (productos.empty()) {
+                cout << "No hay productos cargados.\n";
+            } else {
+                Producto masCaro = productos[0];//inicializamos el producto mas caro con el primer producto del vector
+
+                for (const Producto& p : productos) {//iteramos sobre el vector de productos para encontrar el producto mas caro
+                    if (p.getPrecio() > masCaro.getPrecio()) {//si el precio del producto actual es mayor que el precio del producto mas caro, se actualiza el producto mas caro
+                        masCaro = p;
+                    }
+                }
+
+                cout << "\nProducto mas caro:\n";
+                masCaro.imprimir();
+            }
+            break;
+
+        case 4:
+            cout << "Saliendo...\n";
+            break;
+
+        default:
+            cout << "Opcion invalida.\n";
+        }
+
+    } while (opcion != 4);
 
     return 0;
 }

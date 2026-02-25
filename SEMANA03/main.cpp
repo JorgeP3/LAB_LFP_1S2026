@@ -1,143 +1,112 @@
 #include <iostream>
 #include <string>
 
-using namespace std; // importante para no usar el std:: en cada línea
+//estructuras
+#include <vector>
+#include <map>
+//Lectura escritura de archivos
+#include <fstream>
 
-int sumar(int a, int b) {
-    return a + b;
-}
+using namespace std;
 
-int main() {
-    // comentario de una sola línea
-    /*
-        comentario
-        de 
-        múltiples
-        líneas
-    */
+int main(){
 
-    cout << "==== Practica: fundamentos de c++ === \n" << endl;
-    // 1. TIPOS DE DATOS
-   {
-        int edad=20;
-        long long poblacion = 7800000000;
-        float pi = 3.14f;
-        double promedio = 85.75;
-        char inicial = 'L';
-        bool esEstudiante = false;
-        string nombre = "Jorge";
+    // 1. ARREGLO UNICIMENSIONAL
+    int numeros[5] = {1, 2, 3, 4, 5};
 
-        cout << "--- Tipos y variables ---\n";
-        cout << "edad: " << edad << "\n";
-        cout << "poblacion: " << poblacion << "\n";
-        cout << "pi: " << pi << "\n";
-        cout << "promedio: " << promedio << "\n";
-        cout << "inicial: " << inicial << "\n";
-        cout << "nombre: " << nombre << "\n";
-        cout << "esEstudiante: " << esEstudiante << "\n";
-   }
+    //acceder a un elemento
+    cout << "\nAcceso a un elemento:" << endl;
+    cout << "Elemento en la posicion 2: " << numeros[2] << "\n"; // Imprime 3
 
-   // 2. ENTRADA Y SALIDA
+    //modificar un elemento
+    numeros[2] = 10;
+    cout << "Elemento en la posicion 2 (modificado): " << numeros[2] << "\n";
 
-    /*{
-        cout << "\n--- Entrada y salida ---\n";
-        string userName;
-        int edad;
+    // 2. VECTOR (ARREGLO DINAMICO)
 
-        cout << "Ingrese su nombre: ";
-        cin >> userName; // cin se utiliza para la entrada de datos por consola
+    int matriz[2][3] = {
+        {1, 2, 3},
+        {4, 5, 6}
+    };
 
-        cout << "Ingrese su edad: ";
-        cin >> edad;
+    //acceder a un elemento
+    cout << "\nAcceso a un elemento en matriz:" << endl;
+    cout << "Elemento en la fila 1, columna 2: " << matriz[1][2] << "\n"; // Imprime 6
+    //modificar un elemento
+    matriz[1][2] = 20;
+    cout << "Elemento en la fila 1, columna 2 (modificado): " << matriz[1][2] << "\n";
 
-        cout << "usuario: " << userName << ", edad: " << edad << "\n";
-    }*/
-
-    // 3. CONDICIONALES (IF /ELSE IF / ELSE)
-    /*{
-        cout << "\n--- Condicionales ---\n";
-        
-        int numero;
-        cout << "Ingrese un numero entero: ";
-        cin >> numero;
-
-        if (numero > 0) {
-            cout << "El numero es positivo.\n";
-        } else if (numero < 0) {
-            cout << "El numero es negativo.\n";
-        } else {
-            cout << "El numero es cero.\n";
-        }
-    }*/
-
-    //4. SWITCH 
-    /*{
-        cout << " \n--- Estructura Switch ---\n";
-
-        string userName="Alan";
-        int edad=21;
-
-        int opcion;
-
-        cout << "Menu de opciones:\n";
-        cout << "1. Saludar\n";
-        cout << "2. Mostrar edad\n";
-        cout << "3. Despedirse\n";
-        cout << "Seleccione una opcion (1-3): ";
-        cin >> opcion; 
-        
-        switch (opcion)
-        {
-            case 1:
-                cout << "Hola, " << userName << "!\n";
-                break;// break para salir del switch
-            case 2:
-                cout << "Tu edad es: " << edad << "\n";
-                break;
-            case 3:
-                cout << "Adios!\n";
-                break;
-            default:
-                cout << "Opcion no valida.\n";
-        }
-    }*/
-
-    // 5. CICLOS 
-    /*{
-        cout << "--- Ciclo for ---\n";
-        for (int i = 1; i <= 5; i++) {
-            cout << "Iteracion " << i << "\n";
-        }
-
-        cout << "\n--- Ciclo while ---\n";
-
-        int n;
-
-        cout << "Ingrese n: ";
-        cin >> n;
-
-        int contador = 1;
-        while (contador <= n) {
-            cout << "Contador: " << contador << "\n";
-            contador++;
-        }
-    }*/
-
-    // 6. FUNCIONES
-    {
-        cout << "\n--- Funciones ---\n";
-
-        int a, b;
-        cout << "Ingrese a: ";
-        cin >> a;
-        cout << "Ingrese b: ";
-        cin >> b;
-
-        int resultado = sumar(a, b);
-        cout << "La suma de " << a << " y " << b << " es: " << resultado << "\n";
+    // 3. ITERACION CON FOR 
+    int datos[5] = {10, 20, 30, 40, 50};
+    cout << "\nIteracion con for:" << endl;
+    for (int i = 0; i < 5; i++) {
+        cout << datos[i] << "\n";
     }
 
+    // 4. ITERACION CON FOR RANGE (C++11 en adelante)
+    int valores[5] = {5, 10, 15, 20, 25};
 
+    cout << "\nIteracion con for range:" << endl;
+    for (int elemento : valores) {
+        cout << elemento << "\n";
+    }
+
+    // 5. VECTORES (ARREGLOS DINAMICOS)
+    vector<int> numerosVector;
+
+    cout << "\nElementos en el vector(vacio):" << endl;
+    for (int num : numerosVector) {
+        cout << num << "\n";
+    }
+
+    //push_back para agregar elementos al vector
+    numerosVector.push_back(100);// posicion 0
+    numerosVector.push_back(200);// posicion 1
+    numerosVector.push_back(300);// posicion 2
+    
+    cout << "\nElementos en el vector:" << endl;
+    for (int num : numerosVector) {
+        cout << num << "\n";
+    }
+
+    //metodo para eliminar el ultimo elemento del vector
+    numerosVector.pop_back();
+     cout << "\nElementos en el vector:" << endl;
+    for (int num : numerosVector) {
+        cout << num << "\n";
+    }
+
+    // 6. ESCRITURA DE ARCHIVO
+
+    ofstream salida("archivo.txt");
+
+    if (!salida.is_open()) {
+        cout << "Error al crear el archivo.\n";
+        return 1;
+    }
+
+    salida << "Hola, este es un archivo de texto.\n";
+    salida << "Escrito desde C++.\n";
+
+    salida.close();//cerrar el archivo despues de escribirlo
+    cout << "\nArchivo creado y escrito exitosamente.\n";
+
+    // 7. LECTURA DE ARCHIVO
+    ifstream entrada("archivo.txt");
+    string linea;
+
+    if (!entrada.is_open()) {
+        cout << "Error al abrir el archivo.\n";
+        return 1;
+    }
+
+    cout << "\nContenido del archivo:\n";
+    while (getline(entrada, linea)) {//leer el archivo linea por linea
+        cout << linea << "\n";
+    }
+
+    entrada.close();//cerrar el archivo despues de leerlo
+    cout << "\nArchivo leido exitosamente.\n";
 
     return 0;
 }

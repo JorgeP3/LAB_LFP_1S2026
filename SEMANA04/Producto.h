@@ -11,33 +11,22 @@ private:
     int id;
     string nombre;
     double precio;
-    int idCategoria; // Nuevo campo para la categoría del producto
 
 public:
-    Producto(int id, string nombre, double precio, int idCategoria) {
+    Producto(int id, string nombre, double precio) {
         this->id = id;
         this->nombre = nombre;
         this->precio = precio;
-        this->idCategoria = idCategoria;
     }
 
     void imprimir() const {
         cout << "ID: " << id 
              << " | Nombre: " << nombre 
-             << " | Precio: Q" << precio 
-             << " | Categoría: " << idCategoria << endl;
+             << " | Precio: Q" << precio << endl;
     }
 
     double getPrecio() const {
         return precio;
-    }
-
-    int getIdCategoria() const {
-        return idCategoria;
-    }
-
-    string getNombre() const {
-        return nombre;
     }
 };
 
