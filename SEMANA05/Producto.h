@@ -39,6 +39,10 @@ public:
     string getNombre() const {
         return nombre;
     }
+
+    int getId() const {
+        return id;
+    }
 };
 
 

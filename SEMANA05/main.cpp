@@ -60,6 +60,7 @@ int main() {
             productos.clear();
 
             // Ruta relativa (mismo directorio del .exe)
+            // AJUSTA LA RUTA SEGUN TU CONFIGURACION
             string ruta = "C:\\Users\\lmpgp\\Documents\\1. Ingenieria en sistemas\\1. 1S 2026\\Auxiliatura\\1. Repositorios\\LAB_LFP_1S2026\\SEMANA05\\output\\productos.txt";
 
             // Ruta por si quieren colocar el archivo en el escritorio (ajusten la ruta a su usuario)
@@ -99,6 +100,7 @@ int main() {
         case 2: {
             categorias.clear();
 
+            // AJUSTAR LA RUTA DEL ARCHIVO SEGUN TU CONFIGURACION
             ifstream archivo("C:\\Users\\lmpgp\\Documents\\1. Ingenieria en sistemas\\1. 1S 2026\\Auxiliatura\\1. Repositorios\\LAB_LFP_1S2026\\SEMANA05\\output\\categorias.lfp");
 
             if (!archivo.is_open()) {
@@ -132,6 +134,54 @@ int main() {
                 for (const Producto& p : productos) {
                     p.imprimir();//imprimir los datos del producto usando el metodo imprimir de la clase Producto
                 }
+
+                // CREA EL ARCHIVO HTML (AJUSTA LA RUTA SEGUN TU CASO)
+                ofstream html("C:\\Users\\lmpgp\\Documents\\1. Ingenieria en sistemas\\1. 1S 2026\\Auxiliatura\\1. Repositorios\\LAB_LFP_1S2026\\SEMANA05\\output\\productos.html");
+
+                if (!html.is_open()) {
+                    cout << "No se pudo crear el archivo HTML.\n";
+                    break;
+                }
+
+                // ESTRUCTURA BASICA DEL HTML
+                html << "<!DOCTYPE html>\n";
+                html << "<html>\n";
+                html << "<head>\n";
+                html << "<meta charset='UTF-8'>\n";
+                html << "<title>Lista de Productos</title>\n";
+                html << "<style>\n";
+                html << "table { border-collapse: collapse; width: 60%; }\n";
+                html << "th, td { border: 1px solid black; padding: 8px; text-align: center; }\n";
+                html << "th { background-color: #f2f2f2; }\n";
+                html << "</style>\n";
+                html << "</head>\n";
+                html << "<body>\n";
+
+                html << "<h2>Lista de Productos</h2>\n";
+                html << "<table>\n";
+                html << "<tr>\n";
+                html << "<th>ID</th>\n";
+                html << "<th>Nombre</th>\n";
+                html << "<th>Precio</th>\n";
+                html << "</tr>\n";
+
+                // LLENAR LA TABLA CON LOS PRODUCTOS
+                for (const Producto& p : productos) {
+                    html << "<tr>\n";
+                    html << "<td>" << p.getId() << "</td>\n";
+                    html << "<td>" << p.getNombre() << "</td>\n";
+                    html << "<td>Q" << p.getPrecio() << "</td>\n";
+                    html << "</tr>\n";
+                }
+
+                html << "</table>\n";
+                html << "</body>\n";
+                html << "</html>\n";
+
+                html.close();
+
+                cout << "Archivo productos.html generado correctamente.\n";
+    
             }
             break;
         
