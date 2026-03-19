@@ -36,7 +36,7 @@ int main() {
 
     vector<Producto> productos; // vector para almacenar los objetos Producto
     vector<Categoria> categorias; // vector para almacenar los objetos Categoria
-
+    //vector<Categoria> cat5eg5orias132;
     int opcion;
 
     
@@ -48,7 +48,7 @@ int main() {
         cout << "3. Mostrar productos\n";
         cout << "4. Mostrar productos con su categoria\n";
         cout << "5. Mostrar productos por categoria\n";
-        cout << "6. Mostrar producto mas caro\n";
+        cout << "6. $ Mostrar producto mas caro\n";
         cout << "7. Salir\n";
         cout << "Seleccione una opcion: ";
         cin >> opcion;
