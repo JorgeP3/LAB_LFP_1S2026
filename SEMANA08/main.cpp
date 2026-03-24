@@ -4,22 +4,7 @@
 
 using namespace std;
 
-
-int main() {
-    
-    string bloquePacientes = R"(HOSPITAL {
-    PACIENTES {
-        paciente: "Maria Garcia" [edad: 45, tipo_sangre: "A+", habitacion: 302],
-        paciente: "Carlos Mendoza" [edad: 62, tipo_sangre: "O-", habitacion: 410],
-    };
-};)";
-
-    LexicalAnalyzer analyzer(bloquePacientes);
-
-    analyzer.analizar();
-
-    vector<Token> tokens = analyzer.getTokens();
-
+void generarReporteTokens(vector<Token> tokens){
     cout << "----- TOKENS -----\n";
 
     for (Token t : tokens) {
@@ -79,5 +64,23 @@ int main() {
     archivo.close();
 
     cout << "\nReporte HTML generado: tokens.html\n";
+}
+
+int main() {
+    
+    string bloquePacientes = R"(HOSPITAL {
+    PACIENTES {
+        paciente: "Maria Garcia" [edad: 45, tipo_sangre: "A+", habitacion: 302],
+        paciente: "Carlos Mendoza" [edad: 62, tipo_sangre: "O-", habitacion: 410],
+    };
+};)";
+
+    LexicalAnalyzer analyzer(bloquePacientes);
+
+    analyzer.analizar();
+
+    vector<Token> tokens = analyzer.getTokens();
+
+    generarReporteTokens(tokens);
     return 0;
 }
