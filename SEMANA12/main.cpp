@@ -276,14 +276,26 @@ void generarReporteErrores(vector<Error> errores, string nombreArchivo = "errore
 int main() {
     
     string ejemplo = R"(
-        TABLERO "Proyecto  LFP" $ {
+        TABLERO "Proyecto LFP" {
             COLUMNA "Por Hacer" {
-                tarea: "Diseñar AFD" [prioridad ALTA, responsable: "Jorge", fecha_limite: 2026-05-01],
-                tarea: "Implementar Lexer" [prioridad: ALTA, responsable: "María", fecha_limite: 2026-05-08],
-                tarea: "Escribir casos de prueba" [prioridad: MEDIA, responsable: "Carlos", fecha_limite: 2026-05-10],
-            }
+                tarea: "Diseñar AFD" [prioridad: ALTA, responsable: "Jorge", fecha_limite: 2026-05-01],
+                tarea: "Implementar Lexer" [prioridad: ALTA, responsable: "Maria", fecha_limite: 2026-05-08],
+            };
+            COLUMNA "En Progreso" {
+                tarea: "Diseñar GUI" [prioridad: MEDIA, responsable: "Ana", fecha_limite: 2026-05-10],
+                tarea: "Escribir pruebas" [prioridad: MEDIA, responsable: "Carlos", fecha_limite: 2026-05-12],
+            };
+            COLUMNA "En Revision" {
+                tarea: "Revisar parser" [prioridad: ALTA, responsable: "Pedro", fecha_limite: 2026-05-15],
+                tarea: "Validar reportes" [prioridad: BAJA, responsable: "Luis", fecha_limite: 2026-05-18],
+            };
+            COLUMNA "Completado" {
+                tarea: "Investigar Qt" [prioridad: BAJA, responsable: "Pedro", fecha_limite: 2026-04-20],
+                tarea: "Configurar GitHub" [prioridad: BAJA, responsable: "Jorge", fecha_limite: 2026-04-18],
+            };
         };
     )";
+
 
     LexicalAnalyzer analyzer(ejemplo);
 
@@ -306,6 +318,7 @@ int main() {
 
     if (erroresSintacticos.empty()) {
         cout << "\nAnálisis sintáctico exitoso.\n";
+
     } else {
         generarReporteErrores(erroresSintacticos, "errores_sintacticos.html");
     }

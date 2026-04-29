@@ -65,6 +65,25 @@ private:
         return pos < (int)tokens.size();
     }
 
+    // ─────────────────────────────────────────────────────────────────────────
+    // sincronizar
+    //
+    // Se llama cuando consume() falla. Avanza el dedo token por token
+    // hasta encontrar un PUNTO_COMA, que en TaskScript siempre marca
+    // el fin de una estructura (columna o tablero).
+    //
+    // El dedo se queda apuntando AL punto y coma, no despues de el,
+    // para que el parser pueda consumirlo normalmente cuando le toque.
+    //
+    // Efecto: un error dentro de una columna descarta esa columna completa
+    // y el parser retoma desde la siguiente.
+    
+    void sincronizar() {
+        while (hayTokens() && tokenActual().tipo != "PUNTO_COMA") {
+            pos++;
+        }
+    }
+
     
     // ─────────────────────────────────────────────────────────────────────────
     // consume
@@ -107,6 +126,7 @@ private:
                 tokenActual().linea,
                 tokenActual().columna
             ));
+            sincronizar(); // avanzamos hasta el siguiente punto y coma para retomar el parseo
             return false;
         }
     }
